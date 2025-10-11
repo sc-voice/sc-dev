@@ -1,0 +1,28 @@
+#! /bin/bash
+
+finddir=$1
+if [ "$1" == "ui" ]
+then
+  finddir="/usr/include /usr/local/include"
+fi
+
+if [ "$1" == "cv" ]
+then
+  finddir=/usr/include/opencv*
+fi
+
+if [ "$2" == "" ]
+then
+  echo "Usage:"
+	echo "find in this directory"
+  echo "  f . pattern-to-find"
+	echo "find in /usr/include /usr/local/include"
+  echo "  f ui pattern-to-find"
+	echo "find in /usr/include/opencv*"
+  echo "  f cv pattern-to-find"
+  exit -1
+fi
+
+echo find $finddir -type f -exec grep -H "$2" {} \;
+find $finddir -type f -exec grep -H "$2" {} \;
+echo done searching...

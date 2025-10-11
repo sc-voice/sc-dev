@@ -1,0 +1,7 @@
+--glob=!git/*
+--glob=!local/*
+--glob=!dist/*
+--glob=!**/lib/
+--glob=!*min.css
+--glob=!node_modules/*
+--glob=!package-lock.json

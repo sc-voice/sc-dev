@@ -1,0 +1,20 @@
+new-session "cd ~/finesse/tbw-dev/workspace"
+set -g history-limit 9999
+set -g mode-keys vi
+set-option mouse-select-pane on
+set-option mouse-resize-pane on
+set-option pane-active-border-bg green
+set-option pane-active-border-fg green
+set-option pane-border-fg green
+set-option status-left "#W:"
+set-option status-left-bg black
+set-option status-left-fg green
+set-option display-time 5000
+
+source ~/sc-dev/wide.tmux
+source ~/sc-dev/tall-r.tmux
+
+next-window
+kill-window
+next-window
+

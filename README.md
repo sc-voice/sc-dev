@@ -1,2 +1,2 @@
 # sc-dev
-sc-voice development environment
+sc-voice development environment for MacOS (Karl)

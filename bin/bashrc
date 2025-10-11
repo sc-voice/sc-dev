@@ -1,0 +1,351 @@
+echo ~/bin/bashrc START `date +"%Y%m%d@%H%M%S.%3N"`
+function parse_git_dirty {
+  [[ $(git status 2> /dev/null | tail -n1 | sed s/,.*// ) != "nothing to commit" ]] && echo "*"
+}
+function parse_git_branch {
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
+}
+
+#function parse_git_branch () {
+#  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+#}
+
+function job_count () {
+  jobs | wc -l
+}
+   
+RED="\[\033[0;31m\]"; YELLOW="\[\033[0;33m\]"; GREEN="\[\033[0;32m\]"; NO_COLOR="\[\033[0m\]"
+    
+PS1="$GREEN\h$NO_COLOR:\w$YELLOW:\$(parse_git_branch)$NO_COLOR:\$(job_count)> "
+
+function rgg() {
+  dir=$1
+  shift
+  rg --iglob=${dir}/** $@
+}
+
+function c() {
+  if [ "$1" == "w" ]; then cd *.wiki
+  elif [ "$1" == "down" ]; then cd ~/Downloads
+  elif [ "$1" == "ar" ]; then cd ~/Arduino
+  elif [ "$1" == "t" ]; then cd target
+  elif [ "$1" == "D" ]; then cd Debug
+  elif [ "$1" == "3d" ]; then cd ~/RepRap/Printrun
+  elif [ "$1" == "tom" ]; then cd /opt/local/share/tomcat
+  elif [ "$1" == "sea" ]; then cd ~/dev
+  elif [ "$1" == "fin" ]; then cd ~/finesse
+  elif [ -e ~/dev/ ]; then cd ~/dev
+  elif [ -e ~/github ]; then cd ~/github
+  else cd ~
+  fi
+  if [ -e $1 ]; then cd $1
+  elif [ "$1" == "aen" ]; then cd aeneas-michael
+  elif [ "$1" == "admin" ]; then cd admin_sc-voice_net
+  elif [ "$1" == "api" ]; then cd api_sc-voice_net
+  elif [ "$1" == "B" ]; then cd FireBOM
+  elif [ "$1" == "go" ]; then cd $GOPATH
+  elif [ "$1" == "b" ]; then cd firebom-js
+  elif [ "$1" == "d3" ]; then cd d3_sc-voice_net
+  elif [ "$1" == "dpd" ]; then cd dpd
+  elif [ "$1" == "dr3" ]; then cd dhammaregen3
+  elif [ "$1" == "dpl" ]; then cd ebt-deepl
+  elif [ "$1" == "deepl" ]; then cd ebt-deepl
+  elif [ "$1" == "dsu" ]; then cd sutta
+  elif [ "$1" == "ebt" ]; then cd ebt-site
+  elif [ "$1" == "esite" ]; then cd ebt-site
+  elif [ "$1" == "ede" ]; then cd ebt-de
+  elif [ "$1" == "evue" ]; then cd ebt-vue
+  elif [ "$1" == "ev3" ]; then cd ebt-vue3
+  elif [ "$1" == "edata" ]; then cd ebt-data
+  elif [ "$1" == "stk" ]; then cd smart-stick
+  elif [ "$1" == "rng" ]; then cd om-ranger
+  elif [ "$1" == "bil" ]; then cd scv-bilara
+  elif [ "$1" == "js" ]; then cd just-simple
+  elif [ "$1" == "tts" ]; then cd ebt-tts
+  elif [ "$1" == "bom" ]; then cd FireBOM
+  elif [ "$1" == "bu" ]; then cd translation
+  elif [ "$1" == "c" ]; then cd FirePiCam
+  elif [ "$1" == "cv" ]; then cd opencv
+  elif [ "$1" == "dl" ]; then cd ~/Downloads
+  elif [ "$1" == "dla" ]; then cd ~/Downloads/Arduino
+  elif [ "$1" == "dn" ]; then cd ~/Downloads
+  elif [ "$1" == "du" ]; then cd diff-upsert
+  elif [ "$1" == "dur" ]; then cd scv-duration
+  elif [ "$1" == "tsv" ]; then cd bilara-html-tsv
+  elif [ "$1" == "fg" ]; then cd FireGear
+  elif [ "$1" == "fn" ]; then cd firenodejs
+  elif [ "$1" == "fp" ]; then cd FirePump
+  elif [ "$1" == "fr" ]; then cd fr_sc-voice_net
+  elif [ "$1" == "frscv" ]; then cd fr_sc-voice_net
+  elif [ "$1" == "fpd" ]; then cd ~/dev/FPD-LooseCanon
+  elif [ "$1" == "fs" ]; then cd FireSlide
+  elif [ "$1" == "g" ]; then cd firepick-org.wiki
+  elif [ "$1" == "gf" ]; then cd gfilter
+  elif [ "$1" == "html" ]; then cd FireREST/www/html
+  elif [ "$1" == "io" ]; then cd firepick1.github.io
+  elif [ "$1" == "jan" ]; then cd ~/dev/jansson
+  elif [ "$1" == "ki" ]; then cd kinann
+  elif [ "$1" == "kir" ]; then cd kinann-rest
+  elif [ "$1" == "lc" ]; then cd FPD-LooseCanon
+  elif [ "$1" == "lcw" ]; then cd FPD-LooseCanon.wiki
+  elif [ "$1" == "log" ]; then cd log-instance
+  elif [ "$1" == "mem" ]; then cd memo-again
+  elif [ "$1" == "mj" ]; then cd mathjs
+  elif [ "$1" == "mrk" ]; then cd merkle-json
+  elif [ "$1" == "mote" ] || [ "$1" == "m" ]; then cd FireMote
+  elif [ "$1" == "o" ]; then cd openpnp/gui
+  elif [ "$1" == "oan" ]; then cd oya-ann
+  elif [ "$1" == "oaw" ]; then cd oya-aws
+  elif [ "$1" == "oas" ]; then cd oya-asset
+  elif [ "$1" == "oc" ]; then cd oya-chain
+  elif [ "$1" == "opcb" ]; then cd oyapcb
+  elif [ "$1" == "opi" ]; then cd oyapi
+  elif [ "$1" == "o3" ]; then cd oya3d
+  elif [ "$1" == "osc" ]; then cd oya-scan
+  elif [ "$1" == "otg" ]; then cd oya-tag-garden
+  elif [ "$1" == "ok" ]; then cd okitty
+  elif [ "$1" == "oka" ]; then cd okitty-apig
+  elif [ "$1" == "ov" ]; then cd oya-vue
+  elif [ "$1" == "pa" ]; then cd astar-path
+  elif [ "$1" == "part" ]; then cd firepart
+  elif [ "$1" == "pcb" ]; then cd jspcb
+  elif [ "$1" == "ph" ]; then cd ~/dev/ph5
+  elif [ "$1" == "pick" ]; then cd firepick
+  elif [ "$1" == "scd" ]; then cd ~/sc-dev
+  elif [ "$1" == "po" ]; then cd Pinout.xyz
+  elif [ "$1" == "r" ]; then cd FireREST
+  elif [ "$1" == "rb" ]; then cd rest-bundle
+  elif [ "$1" == "vg" ]; then cd vue-g-row-col
+  elif [ "$1" == "rcl" ]; then cd firerest-client
+  elif [ "$1" == "rcm" ]; then cd firerest-cmd
+  elif [ "$1" == "rec" ]; then cd karls-recipes
+  elif [ "$1" == "ru" ]; then cd ru_sc-voice_net
+  elif [ "$1" == "ruscv" ]; then cd ru_sc-voice_net
+  elif [ "$1" == "sam" ]; then cd aws-sam
+  elif [ "$1" == "say" ]; then cd say-again
+  elif [ "$1" == "sc" ]; then cd firestep-cam 
+  elif [ "$1" == "sca" ]; then cd sc-api
+  elif [ "$1" == "scr" ]; then cd sc-renumber
+  elif [ "$1" == "scv" ]; then cd sc-voice_net
+  elif [ "$1" == "scd" ]; then cd sc-data
+  elif [ "$1" == "sls" ]; then cd serverless
+  elif [ "$1" == "st" ]; then cd FireStep
+  elif [ "$1" == "svs" ]; then cd scv-static
+  elif [ "$1" == "tag" ]; then cd oya-tag
+  elif [ "$1" == "v" ]; then cd fpd-vision
+  elif [ "$1" == "ver" ]; then cd bilara-verse
+  elif [ "$1" == "vmc" ]; then cd vue-motion-cam
+
+  elif [ "$1" == "f" ]; then
+    if [ -e FireFUSE ]; then cd FireFUSE
+    else cd FireREST/FireFUSE
+    fi
+  fi
+
+  if [ "$2" != "" ]; then 
+    cd $2 
+  fi
+}
+
+EXCLUDE="\( -name local -o -name out -o -name dist -o -name bower_components -o -name .metadata -o -name \"*.so\" -o -name bin -o -name ZBar -o -name bootstrap -o -name lib -o -name FireSight -o -name FireFUSE -o -name jansson -o -name jannson -o -name CMakeFiles -o -name opencv -o -name target -o -name node_modules -o -name .git -o -name \"*.class\" -o -name \"*.min.*\" -o -name \"*.o\" \) -prune"
+EXCLUDESRC="\( -name \"*.map\" -o -name \"*.jpg\" -o -name \"*.png\" -o -name \"*.woff\" -o -name \"*.ttf\" \) -prune"
+INCLUDE="\( -name '*.po' -name '*.js' -o -name '*.java' -o -name '*.html' -o -name '*.css' -o -name '*.xml' -o -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -o -name '*.sh' -o -name '*.bat' -o -prune \)"
+
+function lf() {
+  if [ "$1" == "" ]; then
+    echo "find . $EXCLUDE -o -type f -print"
+    eval "find . $EXCLUDE -o -type f -print"
+  else
+    echo "find . $EXCLUDE -o -type f -name \"$1*\" -print"
+    eval "find . $EXCLUDE -o -type f -name \"$1*\" -print"
+  fi
+}
+
+function repgrep() {
+  echo "find . $EXCLUDE -o $EXCLUDESRC -o -type f $INCLUDE -exec grep -HE \"$1\" {} \; -exec sed -i -e \"s/$1/$2/g\" {} \; "
+  eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f $INCLUDE -exec grep -HE \"$1\" {} \; -exec sed -i -e \"s/$1/$2/g\" {} \; "
+}
+
+function lgrep() {
+  eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f $INCLUDE -exec grep -HE \"$1\" {} \; "
+}
+
+function lgrepi() {
+  eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f $INCLUDE -exec grep -iHE \"$1\" {} \; "
+}
+
+function vgrep() {
+  eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f $INCLUDE -exec rg -l -e \"$1\" {} \; -exec echo vi -c 'lcd %:p:h' -c '/$1/' {} +"
+  eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f $INCLUDE -exec rg -l -e \"$1\" {} \; -exec vi -c 'lcd %:p:h' -c '/$1/' {} +"
+}
+
+function vrg() {
+  pat="${!#}"
+  echo PAT "$pat"
+  set -- "${@:1:$#-1}"
+  echo ARGS $*
+  files=`rg -le "$pat" $ARGS`
+  echo "$files"
+  files=`echo $files | tr '\n' ' '`
+  if [ "$files" == "" ]; then
+    echo no files found for "$*"
+  else 
+    echo "vim -c \"/$pat/\" ${files}"
+    eval "vim -c \"/$pat/\" ${files}"
+  fi
+
+}
+
+function v() {
+  if [ "$2" == "" ]; then
+    eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f -name \"$1*\" -exec vim {} + "
+  else
+    eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f -name \"$1*\" -exec echo vim -c 'cd %:p:h' -c 'e $2*' {} + "
+    eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f -name \"$1*\" -exec vim -c 'cd %:p:h'  -c 'e $2*' {} + "
+  fi
+}
+
+function coredump {
+  ulimit -c unlimited
+  sudo bash -c "echo ./core > /proc/sys/kernel/core_pattern"
+}
+
+function ec2ip {
+  if [ "$1" == "" ]; then
+    aws ec2 describe-instances |\
+    json Reservations |\
+    json -a Instances[0].PublicIpAddress |\
+    sed -e "s/^/ubuntu@&/"
+  else
+    aws ec2 describe-instances |\
+    json Reservations[$1].Instances[0].PublicIpAddress |\
+    sed -e "s/^/ubuntu@&/"
+  fi
+}
+
+
+alias ec='export CONFIG='
+alias clr="clear; reset; tmux clear-history"
+alias sshec2="ssh -i ~/.ssh/ec2-pixelbook-2021.pem"
+alias sshlin="ssh "
+alias scpec2="scp -i ~/.ssh/ec2-pixelbook-2021.pem"
+alias sa='eval `ssh-agent -s`; ssh-add ~/.ssh/id_rsa'
+alias sob='source ~/.bashrc'
+alias vib='vim ~/bin/bashrc'
+alias otp='echo $RANDOM | md5sum'
+alias h='history'
+alias hg='history | grep '
+alias psv='ps -eo vsz,pmem,pcpu,user,pid,ppid,stime,tty,time,args --sort vsz'
+alias freek='free | grep s.c | grep -Eo "[^ ]*$"'
+alias freem='free -m | grep s.c | grep -Eo "[^ ]*$"'
+alias xfce='sudo startxfce4'
+alias psg='ps -ef | grep -v "grep --color=auto" | grep '
+alias aptinst='dpkg --get-selections | grep -v deinstall | grep'
+alias aptavail='apt-cache search '
+alias bld='./build |& tee build.log'
+alias bpb='./build post-build |& tee build.log'
+alias win='tmux -u attach'
+alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
+alias sort='sort -b -f '
+alias vsrc='vim -c "cd src"'
+alias kpr='~/.local/bin/keeper shell'
+alias odc='od -t cx1'
+alias npmb='npm run build'
+alias npmbd='npm run build && npm run dev'
+alias npmc='npm run clean'
+alias npmcg='npm run clean; npm run generate'
+alias npmd='npm run dev'
+alias npmg='npm run generate'
+alias npmgp='npm run generate; npm run preview'
+alias npmsa='npm run schedule-action'
+alias npmpa='npm run push-action'
+alias npmi='npm install --save'
+alias npmit='npm install; npm run test '
+alias npmid='npm install --save-dev'
+alias npmt='npm run test'
+alias npmp='npm publish 2>&1 | tee local/publish.log'
+alias npmtt='npm run test:test'
+alias npmt1='npm run test:one'
+alias npmpv='npm run preview'
+alias mt='mocha --inline-diffs'
+alias mtt='mocha -w -R min --inline-diffs -g TEST'
+alias npmj='npm run build:jit |& tee npm.log | head -20'
+alias npms='npm start 2>&1 | tee /tmp/npm.log'
+alias npms3000='npm run start:3000 2>&1 | tee /tmp/npm.log'
+alias npms8080='npm run start:8080 2>&1 | tee /tmp/npm.log'
+alias npmssl='npm run start:ssl'
+alias npmstaging='npm run start:staging'
+alias npmjs='(npm run build:jit && npm start) |& tee npm.log | head -15'
+alias npmv='npm view '
+alias pv="npm ls | head -1 | sed 's/.*@\\([0-9.]*\\).*/\\1/'"
+alias b="if [ -e build ]; then build; else scripts/build; fi"
+alias fname='find . -name '
+alias ff='find . \( -name .git -o -name node_modules \) -prune -o -type f -print'
+alias ffx='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs'
+alias ffsed='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs sed -i '
+alias jsb="js-beautify -r "
+alias jsbx="find . -name '*.js' | xargs js-beautify -r "
+alias gsutta='./scripts/grep-sutta.sh '
+alias play='nice -20 ffplay -loglevel error -stats -nodisp -autoexit '
+alias bls='~/dev/scv-bilara/scripts/search -om1'
+alias bls3='~/dev/scv-bilara/scripts/search -oh3 -ml1 -bd ebt-data'
+alias blsit='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl it '
+alias blspt='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl pt '
+alias blses='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl es '
+alias ble='~/dev/scv-bilara/scripts/bilara_edit'
+alias blv='~/dev/scv-bilara/scripts/bilara_edit vim'
+alias vp='vim package.json'
+alias vz="vim \`fzf\`"
+alias :e='vim '
+alias e='vim '
+alias ifok='if [ "$?" == "0" ]; then '
+alias iferr='if [ "$?" != "0" ]; then '
+alias dock='sudo docker'
+alias dk='docker'
+alias dkb='DOCKER_BUILDKIT=1 docker build .'
+alias dkbs='./scripts/dkr-build.sh'
+alias dkc='docker compose'
+alias dkcr='docker compose run --service-ports'
+alias dke='docker exec -it '
+alias dkis='docker images'
+alias dki='docker image'
+alias dkr='docker run'
+alias dkrt='docker run --rm -it'
+alias dksp='docker system prune'
+alias pdf='soffice --convert-to pdf'
+alias lint='npx eslint --no-warn-ignored'
+alias sha='cat | head -1 | sha256sum | sed -e "s/\(...............\).*/ \\1.../"'
+alias sld='serverless deploy'
+alias sli='serverless invoke'
+alias sll='serverless invoke local -f'
+alias sqldpd='sqlite3 --batch ./local/dpd.db'
+alias rga='rg -g "*"'
+alias rgc='rg --color always'
+alias xc='xclip -sel clip'
+alias nxi='npx nuxi'
+alias src="source ~/bin/bashrc"
+alias vrc="vim ~/bin/bashrc"
+alias xltit='scripts/translate.mjs -da ebt-deepl -dl it -oe1 -dr '
+alias xltpt='scripts/translate.mjs -da ebt-deepl -dl pt-pt -oe1 -dr '
+alias xltes='scripts/translate.mjs -da ebt-deepl -dl es -oe1 -dr '
+alias diff='/usr/bin/diff -Z --color '
+alias biome='npx @biomejs/biome '
+alias bcw='npx @biomejs/biome check --write --max-diagnostics=1'
+alias bcwt='npx @biomejs/biome check --write --max-diagnostics=1 `find test -name "*mjs"`'
+alias bcws='npx @biomejs/biome check --write --max-diagnostics=1 `find src -name "*.mjs"` `test -d tools && find tools -name "*.mjs"`'
+
+export IGNOREEOF=42
+export VISUAL=vim
+export BASH_ENV=~/.bashrc
+export STAGING=unroot@104.237.155.82
+export VOICE=ubuntu@50.18.90.151
+export VOICE2=ubuntu@54.176.202.43
+export S1SCV=unroot@45.79.101.136
+export WWWSCV=unroot@45.33.35.10
+tput init
+
+export GOPATH=$HOME/work
+export SCRIPTPATH=./scripts
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin:$SCRIPTPATH
+
+echo ~/bin/bashrc "-END-" `date +"%Y%m%d@%H%M%S.%3N"`

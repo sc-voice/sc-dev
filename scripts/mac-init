@@ -15,11 +15,11 @@ fi
 
 INFO initializing home directory...
 cd ~
-ln -sf ~/pixel/bin bin
-ln -sf ~/pixel/vimrc .vimrc
-ln -sf ~/pixel/tmux.conf .tmux.conf
-ln -sf ~/pixel/indent.pro .indent.pro
-ln -sf ~/pixel/astyle.rc .astylerc
+ln -sf ~/sc-dev/bin ~/bin
+ln -sf ~/sc-dev/vimrc ~/.vimrc
+ln -sf ~/sc-dev/tmux.conf ~/.tmux.conf
+ln -sf ~/sc-dev/indent.pro ~/.indent.pro
+ln -sf ~/sc-dev/astyle.rc ~/.astylerc
 
 INFO setting up git global configuration
 git config --global user.email "karl@firepick.org"
@@ -27,12 +27,12 @@ git config --global user.name "Karl Lew"
 git config --global push.default simple
 
 if [ -e .bashrc ]; then
-    cmp .bashrc pixel/.bashrc
+    cmp .bashrc sc-dev/.bashrc
     RC=$?; if [ "$RC" != "0" ]; then
         mv -f .bashrc .bashrc.old
     fi
 fi
-ln -sf ~/pixel/.bashrc .bashrc
+ln -sf ~/sc-dev/.bashrc .bashrc
 
 INFO installing console tools
 brew install -q vim
