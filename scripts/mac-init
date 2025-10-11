@@ -1,0 +1,64 @@
+#!/bin/bash
+DIR="$(dirname "$0")"
+source $DIR/console-defs
+
+TIMESTAMP BEGIN
+
+INFO initializing local directory...
+LOCAL=`realpath $DIR/../local`
+if [ ! -d "local" ]; then
+  mkdir $LOCAL
+  INFO "Created folder: $LOCAL"
+else
+  INFO "Folder $LOCAL already exists"
+fi
+
+INFO initializing home directory...
+cd ~
+ln -sf ~/pixel/bin bin
+ln -sf ~/pixel/vimrc .vimrc
+ln -sf ~/pixel/tmux.conf .tmux.conf
+ln -sf ~/pixel/indent.pro .indent.pro
+ln -sf ~/pixel/astyle.rc .astylerc
+
+INFO setting up git global configuration
+git config --global user.email "karl@firepick.org"
+git config --global user.name "Karl Lew"
+git config --global push.default simple
+
+if [ -e .bashrc ]; then
+    cmp .bashrc pixel/.bashrc
+    RC=$?; if [ "$RC" != "0" ]; then
+        mv -f .bashrc .bashrc.old
+    fi
+fi
+ln -sf ~/pixel/.bashrc .bashrc
+
+INFO installing console tools
+brew install -q vim
+brew install -q tmux
+
+INFO installing performance tools
+brew install -q asitop
+brew install -q btop
+brew install -q nvtop
+brew install -q iftop
+brew install -q htop
+
+INFO installing AI tools
+brew install -q ollama
+brew install -q --cask visual-studio-code
+ollama pull nomic-embed-text
+
+INFO installing nodejs environment...
+INSTALL nvm
+if [ $RC -ne 0 ]; then
+  echo INSTALLING nvm
+  curl -o $LOCAL/nvm-install.sh https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+  chmod +x $LOCAL/nvm-install.sh
+  RC=asdf
+  $LOCAL/nvm-install.sh; CHKRC
+  echo RC$RC
+fi
+
+TIMESTAMP END

@@ -1,3 +1,8 @@
+#### CUSTOM
+node_modules
+local
+
+#### GITHUB Node DEFAULTS
 # Logs
 logs
 *.log

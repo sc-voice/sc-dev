@@ -1,0 +1,33 @@
+#!/bin/bash
+DIR="$(dirname "$0")"
+SCRIPT=`basename $0`:
+
+INFO() {
+  echo -e "\033[0;32m$SCRIPT ${*}\033[0m"
+}
+WARN() {
+  echo -e "\033[1;33m$SCRIPT ${*}\033[0m"
+}
+ERROR() {
+  echo -e "\033[1;35m$SCRIPT ${*}\033[0m"
+}
+TIMESTAMP() {
+  NOW=`date "+%Y-%m-%d_%H:%M:%S"`
+  INFO $NOW $*
+}
+INSTALL() {
+  type $1 2>/dev/null
+  export RC=$?
+  if [ $RC -eq 0 ]; then
+    export INSTALLED=1
+    INFO $1 already installed
+  else
+    INFO installing $1...
+  fi
+}
+CHKRC() {
+  export RC=$?
+  if [ $RC -ne 0 ]; then
+    ERROR failed with RC$RC
+  fi
+}
