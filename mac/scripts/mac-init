@@ -4,22 +4,21 @@ source $DIR/console-defs
 
 TIMESTAMP BEGIN
 
-INFO initializing local directory...
-LOCAL=`realpath $DIR/../local`
-if [ ! -d "local" ]; then
-  mkdir $LOCAL
-  INFO "Created folder: $LOCAL"
-else
-  INFO "Folder $LOCAL already exists"
-fi
-
 INFO initializing home directory...
 cd ~
-ln -sf ~/sc-dev/bin ~/bin
+ln -sf ~/sc-dev/mac/bin ~/bin
 ln -sf ~/sc-dev/vimrc ~/.vimrc
-ln -sf ~/sc-dev/tmux.conf ~/.tmux.conf
+ln -sf ~/sc-dev/mac/tmux.conf ~/.tmux.conf
 ln -sf ~/sc-dev/indent.pro ~/.indent.pro
 ln -sf ~/sc-dev/astyle.rc ~/.astylerc
+LOCAL=`realpath $DIR/../../local`
+if [ -d $LOCAL ]; then
+  DEBUG "Folder $LOCAL already exists"
+else
+  mkdir $LOCAL
+  INFO "Created folder: $LOCAL"
+fi
+
 
 INFO setting up git global configuration
 git config --global user.email "karl@firepick.org"
@@ -27,12 +26,12 @@ git config --global user.name "Karl Lew"
 git config --global push.default simple
 
 if [ -e .bashrc ]; then
-    cmp .bashrc sc-dev/.bashrc
+    cmp .bashrc sc-dev/mac/.bashrc
     RC=$?; if [ "$RC" != "0" ]; then
         mv -f .bashrc .bashrc.old
     fi
 fi
-ln -sf ~/sc-dev/.bashrc .bashrc
+ln -sf ~/sc-dev/mac/.bashrc .bashrc
 
 INFO installing console tools
 brew install -q vim
@@ -50,15 +49,19 @@ brew install -q ollama
 brew install -q --cask visual-studio-code
 ollama pull nomic-embed-text
 
-INFO installing nodejs environment...
-INSTALL nvm
+type nvm 2> /dev/null
+RC=$?
+INFO nvm $RC
 if [ $RC -ne 0 ]; then
-  echo INSTALLING nvm
+  INFO Installing nvm
   curl -o $LOCAL/nvm-install.sh https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
   chmod +x $LOCAL/nvm-install.sh
   RC=asdf
   $LOCAL/nvm-install.sh; CHKRC
   echo RC$RC
+else
+  INFO nvm `nvm --version`
+  INFO nodejs `node --version`
 fi
 
 TIMESTAMP END

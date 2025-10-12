@@ -1,22 +1,32 @@
 echo ~/bin/bashrc START `date +"%Y%m%d@%H%M%S.%3N"`
-function parse_git_dirty {
+
+RED="\[\033[1;31m\]"; BYELLOW="\[\033[1;33m\]"; YELLOW="\[\033[0;33m\]"; GREEN="\[\033[0;32m\]"; NO_COLOR="\[\033[0m\]"
+
+function git_dirty1 {
   [[ $(git status 2> /dev/null | tail -n1 | sed s/,.*// ) != "nothing to commit" ]] && echo "*"
 }
-function parse_git_branch {
-    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
-}
-
-#function parse_git_branch () {
-#  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+#function parse_git_branch {
+#    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(git_dirty)]/"
 #}
 
-function job_count () {
-  jobs | wc -l
+function git_dirty2 () {
+  if [ -n "$(git status --porcelain)" ]; then echo -n "$BYELLOW*"; else echo -n "$YELLOW";fi
 }
-   
-RED="\[\033[0;31m\]"; YELLOW="\[\033[0;33m\]"; GREEN="\[\033[0;32m\]"; NO_COLOR="\[\033[0m\]"
+
+function parse_git_branch () {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' 
+}
+
+function job_count () {
+  jobs | wc -l | sed -e 's/ *//'
+}
+
+function user_color () {
+  [ "$EUID" -eq 0 ] && echo -n $RED || echo -n $GREEN
+}
     
-PS1="$GREEN\h$NO_COLOR:\w$YELLOW:\$(parse_git_branch)$NO_COLOR:\$(job_count)> "
+PS1="$GREEN\h:$(user_color)\u:\w$YELLOW:$(git_dirty2)$(parse_git_branch)$NO_COLOR:$(job_count)> "
+#PS1="$GREEN\h:\u$NO_COLOR:\w$YELLOW:$(parse_git_branch)$NO_COLOR:$(job_count)> "
 
 function rgg() {
   dir=$1
@@ -147,7 +157,7 @@ function c() {
   fi
 }
 
-EXCLUDE="\( -name local -o -name out -o -name dist -o -name bower_components -o -name .metadata -o -name \"*.so\" -o -name bin -o -name ZBar -o -name bootstrap -o -name lib -o -name FireSight -o -name FireFUSE -o -name jansson -o -name jannson -o -name CMakeFiles -o -name opencv -o -name target -o -name node_modules -o -name .git -o -name \"*.class\" -o -name \"*.min.*\" -o -name \"*.o\" \) -prune"
+EXCLUDE="\( -name local -o -name out -o -name dist -o -name bower_components -o -name .metadata -o -name \"*.so\" -o -name bin -o -name ZBar -o -name bootstrap -o -name lib -o -name FireSight -o -name FireFUSE -o -name CMakeFiles -o -name target -o -name node_modules -o -name .git -o -name \"*.class\" -o -name \"*.min.*\" -o -name \"*.o\" \) -prune"
 EXCLUDESRC="\( -name \"*.map\" -o -name \"*.jpg\" -o -name \"*.png\" -o -name \"*.woff\" -o -name \"*.ttf\" \) -prune"
 INCLUDE="\( -name '*.po' -name '*.js' -o -name '*.java' -o -name '*.html' -o -name '*.css' -o -name '*.xml' -o -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -o -name '*.sh' -o -name '*.bat' -o -prune \)"
 
@@ -244,7 +254,7 @@ alias aptinst='dpkg --get-selections | grep -v deinstall | grep'
 alias aptavail='apt-cache search '
 alias bld='./build |& tee build.log'
 alias bpb='./build post-build |& tee build.log'
-alias win='tmux -u attach'
+alias win='tmux -u attach -c /bin/bash'
 alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
 alias sort='sort -b -f '
 alias vsrc='vim -c "cd src"'
