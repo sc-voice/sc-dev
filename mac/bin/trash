@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Script to move file to trash with timestamp
+# Usage: ./trash_file.sh <file_path>
+
+# Check if file argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <file_path>"
+    echo "Example: $0 /path/to/myfile.txt"
+    exit 1
+fi
+
+# Store the file path
+FILE_PATH="$1"
+
+# Validate that file exists and is a regular file
+if [ ! -e "$FILE_PATH" ]; then
+    echo "Error: '$FILE_PATH' does not exist"
+    exit 1
+fi
+
+# Create trash directory in current directory
+TRASH_DIR="./.trash"
+mkdir -p "$TRASH_DIR"
+
+# Generate timestamp in YYYYMMDDHHMM format
+TIMESTAMP=$(date +"%Y%m%d%H%M")
+
+# Get filename without path
+FILENAME=$(basename "$FILE_PATH")
+
+# Create new filename with timestamp prefix
+NEW_FILENAME="${TIMESTAMP}_${FILENAME}"
+
+# Move the file
+if mv "$FILE_PATH" "$TRASH_DIR/$NEW_FILENAME"; then
+    echo "Successfully moved '$FILENAME' to '$TRASH_DIR/$NEW_FILENAME'"
+    echo "Timestamp: $TIMESTAMP"
+else
+    echo "Error: Failed to move '$FILE_PATH'"
+    exit 1
+fi
+

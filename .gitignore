@@ -1,6 +1,7 @@
 #### CUSTOM
 node_modules
 local
+.trash
 
 #### GITHUB Node DEFAULTS
 # Logs
