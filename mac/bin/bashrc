@@ -25,8 +25,11 @@ function user_color () {
   [ "$EUID" -eq 0 ] && echo -n $RED || echo -n $GREEN
 }
     
-PS1="$GREEN\h:$(user_color)\u:\w$YELLOW:$(git_dirty2)$(parse_git_branch)$NO_COLOR:$(job_count)> "
-#PS1="$GREEN\h:\u$NO_COLOR:\w$YELLOW:$(parse_git_branch)$NO_COLOR:$(job_count)> "
+dynamic_prompt () {
+  PS1="$GREEN\h:$(user_color)\u:\w$YELLOW:$(git_dirty2)$(parse_git_branch)$NO_COLOR:$(job_count)> "
+  #PS1="$GREEN\h:\u$NO_COLOR:\w$YELLOW:$(parse_git_branch)$NO_COLOR:$(job_count)> "
+}
+PROMPT_COMMAND=dynamic_prompt
 
 function rgg() {
   dir=$1
@@ -335,6 +338,10 @@ alias xc='xclip -sel clip'
 alias nxi='npx nuxi'
 alias src="source ~/bin/bashrc"
 alias vrc="vim ~/bin/bashrc"
+alias py="python3"
+alias pye="python3 -m venv venv"
+alias pya="source venv/bin/activate"
+alias pyd="deactivate"
 alias xltit='scripts/translate.mjs -da ebt-deepl -dl it -oe1 -dr '
 alias xltpt='scripts/translate.mjs -da ebt-deepl -dl pt-pt -oe1 -dr '
 alias xltes='scripts/translate.mjs -da ebt-deepl -dl es -oe1 -dr '
