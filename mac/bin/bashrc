@@ -13,7 +13,7 @@ function git_dirty2 () {
   if [ -n "$(git status --porcelain)" ]; then echo -n "$BYELLOW*"; else echo -n "$YELLOW";fi
 }
 
-function parse_git_branch () {
+function PSGIT () {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' 
 }
 
@@ -24,10 +24,14 @@ function job_count () {
 function user_color () {
   [ "$EUID" -eq 0 ] && echo -n $RED || echo -n $GREEN
 }
+
+function PSVENV () {
+  echo -n $(basename "$VIRTUAL_ENV")
+} 
     
 dynamic_prompt () {
-  PS1="$GREEN\h:$(user_color)\u:\w$YELLOW:$(git_dirty2)$(parse_git_branch)$NO_COLOR:$(job_count)> "
-  #PS1="$GREEN\h:\u$NO_COLOR:\w$YELLOW:$(parse_git_branch)$NO_COLOR:$(job_count)> "
+  PS1="$GREEN\h:$(user_color)\u:\W$YELLOW:$(git_dirty2)$(PSGIT):$(PSVENV)$NO_COLOR:$(job_count)> "
+  #PS1="$GREEN\h:\u$NO_COLOR:\w$YELLOW:$(PSGIT)$NO_COLOR:$(job_count)> "
 }
 PROMPT_COMMAND=dynamic_prompt
 
