@@ -10,11 +10,11 @@ function git_dirty1 {
 #}
 
 function git_dirty2 () {
-  if [ -n "$(git status --porcelain)" ]; then echo -n "$BYELLOW*"; else echo -n "$YELLOW";fi
+  if [ -n "$(git status --porcelain 2>/dev/null)" ]; then echo -n "$BYELLOW*"; else echo -n "$YELLOW";fi
 }
 
 function PSGIT () {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' 
+  git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' 
 }
 
 function job_count () {
@@ -31,8 +31,8 @@ function PSVENV () {
     
 dynamic_prompt () {
   PS1="$GREEN\h:$(user_color)\u:\W$YELLOW:$(git_dirty2)$(PSGIT):$(PSVENV)$NO_COLOR:$(job_count)> "
-  #PS1="$GREEN\h:\u$NO_COLOR:\w$YELLOW:$(PSGIT)$NO_COLOR:$(job_count)> "
 }
+#following is required for MacOS bash:
 PROMPT_COMMAND=dynamic_prompt
 
 function rgg() {
