@@ -164,7 +164,7 @@ function c() {
   fi
 }
 
-EXCLUDE="\( -name local -o -name out -o -name dist -o -name bower_components -o -name .metadata -o -name \"*.so\" -o -name bin -o -name ZBar -o -name bootstrap -o -name lib -o -name FireSight -o -name FireFUSE -o -name CMakeFiles -o -name target -o -name node_modules -o -name .git -o -name \"*.class\" -o -name \"*.min.*\" -o -name \"*.o\" \) -prune"
+EXCLUDE="\( -name local -o -name out -o -name .build -o -name dist -o -name bower_components -o -name .metadata -o -name \"*.so\" -o -name bin -o -name ZBar -o -name bootstrap -o -name lib -o -name FireSight -o -name FireFUSE -o -name CMakeFiles -o -name target -o -name node_modules -o -name .git -o -name \"*.class\" -o -name \"*.min.*\" -o -name \"*.o\" \) -prune"
 EXCLUDESRC="\( -name \"*.map\" -o -name \"*.jpg\" -o -name \"*.png\" -o -name \"*.woff\" -o -name \"*.ttf\" \) -prune"
 INCLUDE="\( -name '*.po' -name '*.js' -o -name '*.java' -o -name '*.html' -o -name '*.css' -o -name '*.xml' -o -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -o -name '*.sh' -o -name '*.bat' -o -prune \)"
 
@@ -267,6 +267,8 @@ alias sort='sort -b -f '
 alias vsrc='vim -c "cd src"'
 alias kpr='~/.local/bin/keeper shell'
 alias odc='od -t cx1'
+alias mb='make build'
+alias mt='make test'
 alias npmb='npm run build'
 alias npmbd='npm run build && npm run dev'
 alias npmc='npm run clean'
@@ -284,8 +286,6 @@ alias npmp='npm publish 2>&1 | tee local/publish.log'
 alias npmtt='npm run test:test'
 alias npmt1='npm run test:one'
 alias npmpv='npm run preview'
-alias mt='mocha --inline-diffs'
-alias mtt='mocha -w -R min --inline-diffs -g TEST'
 alias npmj='npm run build:jit |& tee npm.log | head -20'
 alias npms='npm start 2>&1 | tee /tmp/npm.log'
 alias npms3000='npm run start:3000 2>&1 | tee /tmp/npm.log'
@@ -312,6 +312,7 @@ alias blses='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-dat
 alias ble='~/dev/scv-bilara/scripts/bilara_edit'
 alias blv='~/dev/scv-bilara/scripts/bilara_edit vim'
 alias vp='vim package.json'
+alias vc='vim CLAUDE.md ~/.claude/CLAUDE.md'
 alias vz="vim \`fzf\`"
 alias :e='vim '
 alias e='vim '
@@ -336,20 +337,24 @@ alias sld='serverless deploy'
 alias sli='serverless invoke'
 alias sll='serverless invoke local -f'
 alias sqldpd='sqlite3 --batch ./local/dpd.db'
+alias sqlsuj='sqlite3 --batch ./local/build/ebt-en-sujato.db'
+alias sqlbra='sqlite3 --batch ./local/build/ebt-en-brahmali.db'
+alias sqlpli='sqlite3 --batch ./local/build/ebt-plil-ms.db'
+alias sqlde='sqlite3 --batch ./local/build/ebt-de-sabbamitta.db'
 alias rga='rg -g "*"'
 alias rgc='rg --color always'
 alias xc='xclip -sel clip'
 alias nxi='npx nuxi'
 alias src="source ~/bin/bashrc"
 alias vrc="vim ~/bin/bashrc"
-alias py="python3"
-alias pye="python3 -m venv venv"
-alias pya="source venv/bin/activate"
+alias py="python3.11"
+alias pye="py -m venv venv"
+alias pya="source venv/bin/activate; py --version"
 alias pyd="deactivate"
+alias ubuntu='container run -it --volume ubuntu-data:/data ubuntu:latest bash'
 alias xltit='scripts/translate.mjs -da ebt-deepl -dl it -oe1 -dr '
 alias xltpt='scripts/translate.mjs -da ebt-deepl -dl pt-pt -oe1 -dr '
 alias xltes='scripts/translate.mjs -da ebt-deepl -dl es -oe1 -dr '
-alias diff='/usr/bin/diff -Z --color '
 alias biome='npx @biomejs/biome '
 alias bcw='npx @biomejs/biome check --write --max-diagnostics=1'
 alias bcwt='npx @biomejs/biome check --write --max-diagnostics=1 `find test -name "*mjs"`'

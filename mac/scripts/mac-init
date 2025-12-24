@@ -24,6 +24,7 @@ INFO setting up git global configuration
 git config --global user.email "karl@firepick.org"
 git config --global user.name "Karl Lew"
 git config --global push.default simple
+brew install -q git-lfs
 
 if [ -e .bashrc ]; then
     cmp .bashrc sc-dev/mac/.bashrc
@@ -48,6 +49,9 @@ INFO installing AI tools
 brew install -q ollama
 brew install -q --cask visual-studio-code
 ollama pull nomic-embed-text
+
+INFO install AV tools
+brew install -q ffmpeg
 
 type nvm 2> /dev/null
 RC=$?

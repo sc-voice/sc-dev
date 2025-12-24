@@ -10,7 +10,7 @@ set incsearch                     " Highlight matches as you type.
 set hlsearch                      " Highlight matches.
 set shell=/bin/bash
 set wrap                          " Turn on line wrapping.
-set modeline                      " Allow per file config
+set nomodeline                    " Allow per file config
 
 set formatoptions-=r             " disable comment auto-indent on enter
 set nows			  " stop at EOF when searching
@@ -63,6 +63,7 @@ autocmd BufNewFile,BufReadPost *.cjs set filetype=javascript
 autocmd BufNewFile,BufReadPost *.mjs set filetype=javascript
 set sw=2			  " shift width
 set ts=2              " tab stop
+set softtabstop=2
 autocmd FileType javascript set sw=2 ts=2
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -75,3 +76,6 @@ set statusline=
 set statusline+=%n@%c=%B:
 set statusline+=%f
 set statusline+=\ %m
+set foldmethod=indent
+set foldlevel=99
+let g:markdown_recommended_style=0

@@ -1,0 +1,19 @@
+TZ=$1
+if [[ "$TZ" == "" ]]; then
+  TZ=UTC
+fi
+if [[ "$TZ" == "PST" || "$TZ" == "pst" ]]; then
+  TZ="America/Los_Angeles"
+elif [[ "$TZ" == "utc" || "$TZ" == "UTC" ]]; then
+  TZ="UTC"
+elif [[ "$TZ" == "cet" || "$TZ" == "CET" || "$TZ" == "DE" || "$TZ" == "de" ]]; then
+  TZ="Europe/Berlin"
+elif [[ "$TZ" == "AU" || "$TZ" == "au" ]]; then
+  TZ="Australia/Sydney"
+else
+  echo unknown Timezone $TZ
+  exit -1
+fi
+export TZ
+echo $TZ
+date

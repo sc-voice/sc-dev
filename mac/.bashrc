@@ -118,11 +118,11 @@ echo LOADING BASHRC
 source ~/bin/bashrc
 
 
-# NODE Version 20
+# NODE Version 24
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm use 20
+nvm use 24
 
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
@@ -134,3 +134,8 @@ export GOPATH=$HOME/work
 export PATH=~/bin:$PATH:/usr/local/go/bin:$GOPATH/bin
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/visakha/.lmstudio/bin"
+# End of LM Studio CLI section
+
