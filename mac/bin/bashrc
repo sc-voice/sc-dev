@@ -28,9 +28,9 @@ function user_color () {
 function PSVENV () {
   echo -n $(basename "$VIRTUAL_ENV")
 } 
-    
+
 dynamic_prompt () {
-  PS1="$GREEN\h:$(user_color)\u:\W$YELLOW:$(git_dirty2)$(PSGIT):$(PSVENV)$NO_COLOR:$(job_count)> "
+  PS1="$(user_color)${HOSTNAME:0:3}:$YELLOW$(git_dirty2)$(PSGIT):\W:$(PSVENV)$NO_COLOR:$(job_count)> "
 }
 #following is required for MacOS bash:
 PROMPT_COMMAND=dynamic_prompt
@@ -60,7 +60,6 @@ function c() {
   elif [ "$1" == "admin" ]; then cd admin_sc-voice_net
   elif [ "$1" == "api" ]; then cd api_sc-voice_net
   elif [ "$1" == "B" ]; then cd FireBOM
-  elif [ "$1" == "go" ]; then cd $GOPATH
   elif [ "$1" == "b" ]; then cd firebom-js
   elif [ "$1" == "d3" ]; then cd d3_sc-voice_net
   elif [ "$1" == "dpd" ]; then cd dpd
@@ -98,6 +97,7 @@ function c() {
   elif [ "$1" == "fs" ]; then cd FireSlide
   elif [ "$1" == "g" ]; then cd firepick-org.wiki
   elif [ "$1" == "gf" ]; then cd gfilter
+  elif [ "$1" == "go" ]; then cd $GOPATH
   elif [ "$1" == "html" ]; then cd FireREST/www/html
   elif [ "$1" == "io" ]; then cd firepick1.github.io
   elif [ "$1" == "jan" ]; then cd ~/dev/jansson
@@ -240,33 +240,57 @@ function ec2ip {
   fi
 }
 
-
-alias ec='export CONFIG='
+alias :e='vim '
+alias aptavail='apt-cache search '
+alias aptinst='dpkg --get-selections | grep -v deinstall | grep'
+alias b="if [ -e build ]; then build; else scripts/build; fi"
+alias bcw='npx @biomejs/biome check --write --max-diagnostics=1'
+alias bcws='npx @biomejs/biome check --write --max-diagnostics=1 `find src -name "*.mjs"` `test -d tools && find tools -name "*.mjs"`'
+alias bcwt='npx @biomejs/biome check --write --max-diagnostics=1 `find test -name "*mjs"`'
+alias biome='npx @biomejs/biome '
+alias bld='./build |& tee build.log'
+alias ble='~/dev/scv-bilara/scripts/bilara_edit'
+alias bls='~/dev/scv-bilara/scripts/search -om1'
+alias bls3='~/dev/scv-bilara/scripts/search -oh3 -ml1 -bd ebt-data'
+alias blses='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl es '
+alias blsit='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl it '
+alias blspt='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl pt '
+alias blv='~/dev/scv-bilara/scripts/bilara_edit vim'
+alias bpb='./build post-build |& tee build.log'
+alias cli='npm run cli -s -- '
 alias clr="clear; reset; tmux clear-history"
-alias sshec2="ssh -i ~/.ssh/ec2-pixelbook-2021.pem"
-alias sshlin="ssh "
-alias scpec2="scp -i ~/.ssh/ec2-pixelbook-2021.pem"
-alias sa='eval `ssh-agent -s`; ssh-add ~/.ssh/id_rsa'
-alias sob='source ~/.bashrc'
-alias vib='vim ~/bin/bashrc'
-alias otp='echo $RANDOM | md5sum'
-alias h='history'
-alias hg='history | grep '
-alias psv='ps -eo vsz,pmem,pcpu,user,pid,ppid,stime,tty,time,args --sort vsz'
+alias dk='docker'
+alias dkb='DOCKER_BUILDKIT=1 docker build .'
+alias dkbs='./scripts/dkr-build.sh'
+alias dkc='docker compose'
+alias dkcr='docker compose run --service-ports'
+alias dke='docker exec -it '
+alias dki='docker image'
+alias dkis='docker images'
+alias dkr='docker run'
+alias dkrt='docker run --rm -it'
+alias dksp='docker system prune'
+alias dock='sudo docker'
+alias e='vim '
+alias ec='export CONFIG='
+alias ff='find . \( -name .git -o -name node_modules \) -prune -o -type f -print'
+alias ffsed='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs sed -i '
+alias ffx='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs'
+alias fname='find . -name '
 alias freek='free | grep s.c | grep -Eo "[^ ]*$"'
 alias freem='free -m | grep s.c | grep -Eo "[^ ]*$"'
-alias xfce='sudo startxfce4'
-alias psg='ps -ef | grep -v "grep --color=auto" | grep '
-alias aptinst='dpkg --get-selections | grep -v deinstall | grep'
-alias aptavail='apt-cache search '
-alias bld='./build |& tee build.log'
-alias bpb='./build post-build |& tee build.log'
-alias win='tmux -u attach -c /bin/bash'
-alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
-alias sort='sort -b -f '
-alias vsrc='vim -c "cd src"'
+alias gcom='git commit -m "$(cat local/commit-msg)"'
+alias gsutta='./scripts/grep-sutta.sh '
+alias gw='git worktree'
+alias h='history'
+alias haiku='claude --model haiku'
+alias hg='history | grep '
+alias iferr='if [ "$?" != "0" ]; then '
+alias ifok='if [ "$?" == "0" ]; then '
+alias jsb="js-beautify -r "
+alias jsbx="find . -name '*.js' | xargs js-beautify -r "
 alias kpr='~/.local/bin/keeper shell'
-alias odc='od -t cx1'
+alias lint='npx eslint --no-warn-ignored'
 alias mb='make build'
 alias mt='make test'
 alias npmb='npm run build'
@@ -274,91 +298,74 @@ alias npmbd='npm run build && npm run dev'
 alias npmc='npm run clean'
 alias npmcg='npm run clean; npm run generate'
 alias npmd='npm run dev'
+alias npmf='npm run format'
 alias npmg='npm run generate'
 alias npmgp='npm run generate; npm run preview'
-alias npmsa='npm run schedule-action'
-alias npmpa='npm run push-action'
 alias npmi='npm install --save'
-alias npmit='npm install; npm run test '
 alias npmid='npm install --save-dev'
-alias npmt='npm run test'
-alias npmp='npm publish 2>&1 | tee local/publish.log'
-alias npmtt='npm run test:test'
-alias npmt1='npm run test:one'
-alias npmpv='npm run preview'
+alias npmit='npm install; npm run test '
 alias npmj='npm run build:jit |& tee npm.log | head -20'
+alias npmjs='(npm run build:jit && npm start) |& tee npm.log | head -15'
+alias npmp='npm publish 2>&1 | tee local/publish.log'
+alias npmpa='npm run push-action'
+alias npmpv='npm run preview'
 alias npms='npm start 2>&1 | tee /tmp/npm.log'
 alias npms3000='npm run start:3000 2>&1 | tee /tmp/npm.log'
 alias npms8080='npm run start:8080 2>&1 | tee /tmp/npm.log'
+alias npmsa='npm run schedule-action'
 alias npmssl='npm run start:ssl'
 alias npmstaging='npm run start:staging'
-alias npmjs='(npm run build:jit && npm start) |& tee npm.log | head -15'
+alias npmt='npm run test'
+alias npmt1='npm run test:one'
+alias npmtt='npm run test:test'
+alias npmtw='npm run test -w'
 alias npmv='npm view '
-alias pv="npm ls | head -1 | sed 's/.*@\\([0-9.]*\\).*/\\1/'"
-alias b="if [ -e build ]; then build; else scripts/build; fi"
-alias fname='find . -name '
-alias ff='find . \( -name .git -o -name node_modules \) -prune -o -type f -print'
-alias ffx='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs'
-alias ffsed='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs sed -i '
-alias jsb="js-beautify -r "
-alias jsbx="find . -name '*.js' | xargs js-beautify -r "
-alias gsutta='./scripts/grep-sutta.sh '
-alias play='nice -20 ffplay -loglevel error -stats -nodisp -autoexit '
-alias bls='~/dev/scv-bilara/scripts/search -om1'
-alias bls3='~/dev/scv-bilara/scripts/search -oh3 -ml1 -bd ebt-data'
-alias blsit='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl it '
-alias blspt='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl pt '
-alias blses='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl es '
-alias ble='~/dev/scv-bilara/scripts/bilara_edit'
-alias blv='~/dev/scv-bilara/scripts/bilara_edit vim'
-alias vp='vim package.json'
-alias vc='vim CLAUDE.md ~/.claude/CLAUDE.md'
-alias vz="vim \`fzf\`"
-alias :e='vim '
-alias e='vim '
-alias ifok='if [ "$?" == "0" ]; then '
-alias iferr='if [ "$?" != "0" ]; then '
-alias dock='sudo docker'
-alias dk='docker'
-alias dkb='DOCKER_BUILDKIT=1 docker build .'
-alias dkbs='./scripts/dkr-build.sh'
-alias dkc='docker compose'
-alias dkcr='docker compose run --service-ports'
-alias dke='docker exec -it '
-alias dkis='docker images'
-alias dki='docker image'
-alias dkr='docker run'
-alias dkrt='docker run --rm -it'
-alias dksp='docker system prune'
+alias nxi='npx nuxi'
+alias odc='od -t cx1'
+alias otp='echo $RANDOM | md5sum'
 alias pdf='soffice --convert-to pdf'
-alias lint='npx eslint --no-warn-ignored'
+alias play='nice -20 ffplay -loglevel error -stats -nodisp -autoexit '
+alias psg='ps -ef | grep -v "grep --color=auto" | grep '
+alias psv='ps -eo vsz,pmem,pcpu,user,pid,ppid,stime,tty,time,args --sort vsz'
+alias pv="node -p \"require('./package.json').version\""
+alias py="python3.11"
+alias pya="source venv/bin/activate; py --version"
+alias pyd="deactivate"
+alias pye="py -m venv venv"
+alias rga='rg -g "*"'
+alias rgc='rg --color always'
+alias sa='eval `ssh-agent -s`; ssh-add ~/.ssh/id_rsa'
+alias scpec2="scp -i ~/.ssh/ec2-pixelbook-2021.pem"
 alias sha='cat | head -1 | sha256sum | sed -e "s/\(...............\).*/ \\1.../"'
 alias sld='serverless deploy'
 alias sli='serverless invoke'
 alias sll='serverless invoke local -f'
-alias sqldpd='sqlite3 --batch ./local/dpd.db'
-alias sqlsuj='sqlite3 --batch ./local/build/ebt-en-sujato.db'
+alias sob='source ~/.bashrc'
+alias sort='sort -b -f '
 alias sqlbra='sqlite3 --batch ./local/build/ebt-en-brahmali.db'
-alias sqlpli='sqlite3 --batch ./local/build/ebt-plil-ms.db'
 alias sqlde='sqlite3 --batch ./local/build/ebt-de-sabbamitta.db'
-alias rga='rg -g "*"'
-alias rgc='rg --color always'
-alias xc='xclip -sel clip'
-alias nxi='npx nuxi'
+alias sqldpd='sqlite3 --batch ./local/dpd.db'
+alias sqlnoe='sqlite3 --batch ./local/build/ebt-fr-noeismet.db'
+alias sqlpli='sqlite3 --batch ./local/build/ebt-pli-ms.db'
+alias sqlsom='sqlite3 --batch ./local/build/ebt-en-soma.db'
+alias sqlsuj='sqlite3 --batch ./local/build/ebt-en-sujato.db'
 alias src="source ~/bin/bashrc"
-alias vrc="vim ~/bin/bashrc"
-alias py="python3.11"
-alias pye="py -m venv venv"
-alias pya="source venv/bin/activate; py --version"
-alias pyd="deactivate"
+alias sshec2="ssh -i ~/.ssh/ec2-pixelbook-2021.pem"
+alias sshlin="ssh "
 alias ubuntu='container run -it --volume ubuntu-data:/data ubuntu:latest bash'
+alias vc='vim CLAUDE.md ~/.claude/CLAUDE.md'
+alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
+alias vib='vim ~/bin/bashrc'
+alias vp='vim package.json'
+alias vrc="vim ~/bin/bashrc"
+alias vsrc='vim -c "cd src"'
+alias vz="vim \`fzf\`"
+alias win='tmux -u attach -c /bin/bash'
+alias xc='xclip -sel clip'
+alias xfce='sudo startxfce4'
+alias xltes='scripts/translate.mjs -da ebt-deepl -dl es -oe1 -dr '
 alias xltit='scripts/translate.mjs -da ebt-deepl -dl it -oe1 -dr '
 alias xltpt='scripts/translate.mjs -da ebt-deepl -dl pt-pt -oe1 -dr '
-alias xltes='scripts/translate.mjs -da ebt-deepl -dl es -oe1 -dr '
-alias biome='npx @biomejs/biome '
-alias bcw='npx @biomejs/biome check --write --max-diagnostics=1'
-alias bcwt='npx @biomejs/biome check --write --max-diagnostics=1 `find test -name "*mjs"`'
-alias bcws='npx @biomejs/biome check --write --max-diagnostics=1 `find src -name "*.mjs"` `test -d tools && find tools -name "*.mjs"`'
 
 export IGNOREEOF=42
 export VISUAL=vim
