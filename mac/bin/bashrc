@@ -110,6 +110,7 @@ function c() {
   elif [ "$1" == "mj" ]; then cd mathjs
   elif [ "$1" == "mrk" ]; then cd merkle-json
   elif [ "$1" == "mote" ] || [ "$1" == "m" ]; then cd FireMote
+  elif [ "$1" == "nf" ]; then cd nx-nameforma/pkg/nameforma
   elif [ "$1" == "o" ]; then cd openpnp/gui
   elif [ "$1" == "oan" ]; then cd oya-ann
   elif [ "$1" == "oaw" ]; then cd oya-aws
@@ -279,7 +280,8 @@ alias ffx='find . \( -name .git -o -name node_modules \) -prune -o -type f -prin
 alias fname='find . -name '
 alias freek='free | grep s.c | grep -Eo "[^ ]*$"'
 alias freem='free -m | grep s.c | grep -Eo "[^ ]*$"'
-alias gcom='git commit -m "$(cat local/commit-msg)"'
+alias gcom='git commit -m "$(cat .commit-msg)"'
+alias gcoma='git commit --amend -F .commit-msg'
 alias gsutta='./scripts/grep-sutta.sh '
 alias gw='git worktree'
 alias h='history'
@@ -354,6 +356,7 @@ alias sshec2="ssh -i ~/.ssh/ec2-pixelbook-2021.pem"
 alias sshlin="ssh "
 alias ubuntu='container run -it --volume ubuntu-data:/data ubuntu:latest bash'
 alias vc='vim CLAUDE.md ~/.claude/CLAUDE.md'
+alias vpi='vim ~/.pi/prompts/*'
 alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
 alias vib='vim ~/bin/bashrc'
 alias vp='vim package.json'
@@ -361,6 +364,8 @@ alias vrc="vim ~/bin/bashrc"
 alias vsrc='vim -c "cd src"'
 alias vz="vim \`fzf\`"
 alias win='tmux -u attach -c /bin/bash'
+alias tm='tmux new-session -s main -c .'
+
 alias xc='xclip -sel clip'
 alias xfce='sudo startxfce4'
 alias xltes='scripts/translate.mjs -da ebt-deepl -dl es -oe1 -dr '

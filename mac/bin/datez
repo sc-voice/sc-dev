@@ -6,6 +6,8 @@ if [[ "$TZ" == "PST" || "$TZ" == "pst" ]]; then
   TZ="America/Los_Angeles"
 elif [[ "$TZ" == "utc" || "$TZ" == "UTC" ]]; then
   TZ="UTC"
+elif [[ "$TZ" == "mst" || "$TZ" == "MST" ]]; then
+  TZ="America/Denver"
 elif [[ "$TZ" == "cet" || "$TZ" == "CET" || "$TZ" == "DE" || "$TZ" == "de" ]]; then
   TZ="Europe/Berlin"
 elif [[ "$TZ" == "AU" || "$TZ" == "au" ]]; then

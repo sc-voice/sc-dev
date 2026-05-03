@@ -140,3 +140,4 @@ export PATH="$PATH:/Users/visakha/.lmstudio/bin"
 # End of LM Studio CLI section
 
 . "$HOME/.cargo/env"
+export PATH="$HOME/.local/bin:$PATH"
