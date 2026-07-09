@@ -141,3 +141,7 @@ export PATH="$PATH:/Users/visakha/.lmstudio/bin"
 
 . "$HOME/.cargo/env"
 export PATH="$HOME/.local/bin:$PATH"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
