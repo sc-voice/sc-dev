@@ -2,15 +2,31 @@
 DIR="$(dirname "$0")"
 source $DIR/console-defs
 
+LN_MAYBE() {
+  if [ -e "$2" ]; then
+    if [ "$(readlink "$2")" == "$1" ]; then
+      INFO "$2 -> $1 (OK)"
+    else
+      WARN "$2 exists and cannot linking $1"
+      exit 1
+    fi
+  else
+    ln -sfn "$1" "$2"
+  fi
+}
+
 TIMESTAMP BEGIN
 
 INFO initializing home directory...
 cd ~
-ln -sf ~/sc-dev/mac/bin ~/bin
-ln -sf ~/sc-dev/vimrc ~/.vimrc
-ln -sf ~/sc-dev/mac/tmux.conf ~/.tmux.conf
-ln -sf ~/sc-dev/indent.pro ~/.indent.pro
-ln -sf ~/sc-dev/astyle.rc ~/.astylerc
+LN_MAYBE ~/sc-dev/mac/bin ~/bin
+LN_MAYBE ~/sc-dev/vimrc ~/.vimrc
+LN_MAYBE ~/sc-dev/mac/tmux.conf ~/.tmux.conf
+LN_MAYBE ~/sc-dev/indent.pro ~/.indent.pro
+LN_MAYBE ~/sc-dev/astyle.rc ~/.astylerc
+[ -L ~/.config ] && { ERROR ~/.config is a symbolic link; remove it and rerun; exit 1; }
+mkdir -p ~/.config
+LN_MAYBE ~/sc-dev/config/nvim ~/.config/nvim
 LOCAL=`realpath $DIR/../../local`
 if [ -d $LOCAL ]; then
   DEBUG "Folder $LOCAL already exists"
@@ -19,11 +35,11 @@ else
   INFO "Created folder: $LOCAL"
 fi
 
-
 INFO setting up git global configuration
 git config --global user.email "karl@firepick.org"
 git config --global user.name "Karl Lew"
 git config --global push.default simple
+git config --global pull.rebase	true
 brew install -q git-lfs
 
 if [ -e .bashrc ]; then
@@ -36,6 +52,7 @@ ln -sf ~/sc-dev/mac/.bashrc .bashrc
 
 INFO installing console tools
 brew install -q vim
+brew install -q neovim
 brew install -q tmux
 
 INFO installing performance tools
@@ -45,22 +62,18 @@ brew install -q nvtop
 brew install -q iftop
 brew install -q htop
 
-INFO installing AI tools
-brew install -q ollama
-brew install -q --cask visual-studio-code
-ollama pull nomic-embed-text
-
 INFO install AV tools
 brew install -q ffmpeg
 
-type nvm 2> /dev/null
+INFO instlling Node tools
+[ -s "$HOME/.nvm/nvm.sh" ]
 RC=$?
 INFO nvm $RC
 if [ $RC -ne 0 ]; then
   INFO Installing nvm
-  curl -o $LOCAL/nvm-install.sh https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+  curl -fo $LOCAL/nvm-install.sh https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh
+  echo "48a0eee9a60e07422dce0eb5774754c83889570ca1ee2566c516acbe8af03a9e  $LOCAL/nvm-install.sh" | shasum -a 256 -c - || { ERROR nvm checksum mismatch; exit 1; }
   chmod +x $LOCAL/nvm-install.sh
-  RC=asdf
   $LOCAL/nvm-install.sh; CHKRC
   echo RC$RC
 else
@@ -68,4 +81,10 @@ else
   INFO nodejs `node --version`
 fi
 
+INFO installing AI tools
+brew install -q --cask visual-studio-code
+brew install -q jundot/omlx/omlx
+echo "Recommend oMLX LLM: gemma-4-26b-a4b-it-8bit"
+
 TIMESTAMP END
+

@@ -30,7 +30,7 @@ function PSVENV () {
 } 
 
 dynamic_prompt () {
-  PS1="$(user_color)${HOSTNAME:0:3}:$YELLOW$(git_dirty2)$(PSGIT):\W:$(PSVENV)$NO_COLOR:$(job_count)> "
+  PS1="$(user_color)${HOSTNAME:0:7}:$YELLOW$(git_dirty2)$(PSGIT):\W:$(PSVENV)$NO_COLOR:$(job_count)> "
 }
 #following is required for MacOS bash:
 PROMPT_COMMAND=dynamic_prompt
@@ -81,6 +81,7 @@ function c() {
   elif [ "$1" == "bom" ]; then cd FireBOM
   elif [ "$1" == "bu" ]; then cd translation
   elif [ "$1" == "c" ]; then cd FirePiCam
+  elif [ "$1" == "cbm" ]; then cd codebase-memory-mcp
   elif [ "$1" == "cv" ]; then cd opencv
   elif [ "$1" == "dl" ]; then cd ~/Downloads
   elif [ "$1" == "dla" ]; then cd ~/Downloads/Arduino
@@ -126,7 +127,7 @@ function c() {
   elif [ "$1" == "part" ]; then cd firepart
   elif [ "$1" == "pcb" ]; then cd jspcb
   elif [ "$1" == "ph" ]; then cd ~/dev/ph5
-  elif [ "$1" == "pick" ]; then cd firepick
+  elif [ "$1" == "pic" ]; then cd picrophone
   elif [ "$1" == "scd" ]; then cd ~/sc-dev
   elif [ "$1" == "po" ]; then cd Pinout.xyz
   elif [ "$1" == "r" ]; then cd FireREST
@@ -202,17 +203,21 @@ function vrg() {
   echo pat "$pat"
   files=`rg -le "$pat" $* | xargs echo`
   echo files ${files}
-  echo "vim -c \"/$pat/\" ${files}"
-  eval "vim -c \"/$pat/\" ${files}"
+  echo "nvim -c \"/$pat/\" ${files}"
+  eval "nvim -c \"/$pat/\" ${files}"
 }
 
-function v() {
+function vx() {
   if [ "$2" == "" ]; then
     eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f -name \"$1*\" -exec vim {} + "
   else
     eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f -name \"$1*\" -exec echo vim -c 'cd %:p:h' -c 'e $2*' {} + "
     eval "find . $EXCLUDE -o $EXCLUDESRC -o -type f -name \"$1*\" -exec vim -c 'cd %:p:h'  -c 'e $2*' {} + "
   fi
+}
+
+function  v() {
+  find . -name "${1}*" | xargs nvim
 }
 
 function coredump {
@@ -233,7 +238,7 @@ function ec2ip {
   fi
 }
 
-alias :e='vim '
+alias :e='nvim '
 alias aptavail='apt-cache search '
 alias aptinst='dpkg --get-selections | grep -v deinstall | grep'
 alias b="if [ -e build ]; then build; else scripts/build; fi"
@@ -248,10 +253,14 @@ alias bls3='~/dev/scv-bilara/scripts/search -oh3 -ml1 -bd ebt-data'
 alias blses='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl es '
 alias blsit='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl it '
 alias blspt='~/dev/scv-bilara/scripts/search -oh3 -ml1 -da ebt-deepl -bd ebt-data -dl pt '
-alias blv='~/dev/scv-bilara/scripts/bilara_edit vim'
+alias blv='~/dev/scv-bilara/scripts/bilara_edit nvim'
 alias bpb='./build post-build |& tee build.log'
+alias cbm="codebase-memory-mcp"
 alias cli='npm run cli -s -- '
 alias clr="clear; reset; tmux clear-history"
+alias cg="codegraph sync > /dev/null ; codegraph query"
+alias cgn="codegraph sync > /dev/null; codegraph node"
+alias cgs="codegraph sync"
 alias dk='docker'
 alias dkb='DOCKER_BUILDKIT=1 docker build .'
 alias dkbs='./scripts/dkr-build.sh'
@@ -264,7 +273,7 @@ alias dkr='docker run'
 alias dkrt='docker run --rm -it'
 alias dksp='docker system prune'
 alias dock='sudo docker'
-alias e='vim '
+alias e='nvim '
 alias ec='export CONFIG='
 alias ff='find . \( -name .git -o -name node_modules \) -prune -o -type f -print'
 alias ffsed='find . \( -name .git -o -name node_modules \) -prune -o -type f -print | xargs sed -i '
@@ -287,6 +296,8 @@ alias kpr='~/.local/bin/keeper shell'
 alias lint='npx eslint --no-warn-ignored'
 alias mb='make build'
 alias mt='make test'
+alias nft='nf --tui'
+alias nff='nf --tui find --fuzzy-id id'
 alias npmb='npm run build'
 alias npmbd='npm run build && npm run dev'
 alias npmc='npm run clean'
@@ -338,8 +349,13 @@ alias sll='serverless invoke local -f'
 alias sob='source ~/.bashrc'
 alias sort='sort -b -f '
 alias sqlbra='sqlite3 --batch ./local/build/ebt-en-brahmali.db'
+alias sqlcbm='sqlite3 --batch .cbm.db'
+alias sqlcbt='sqlite3 --batch .cbm.db ".mode table"'
+alias sqlcbj='sqlite3 --batch .cbm.db ".mode json"'
 alias sqlde='sqlite3 --batch ./local/build/ebt-de-sabbamitta.db'
 alias sqldpd='sqlite3 --batch ./local/dpd.db'
+alias sqlcg='sqlite3 --batch .codegraph/codegraph.db ".mode table"'
+alias sqlcgj='sqlite3 --batch .codegraph/codegraph.db ".mode json"'
 alias sqlnoe='sqlite3 --batch ./local/build/ebt-fr-noeismet.db'
 alias sqlpli='sqlite3 --batch ./local/build/ebt-pli-ms.db'
 alias sqlsom='sqlite3 --batch ./local/build/ebt-en-soma.db'
@@ -348,14 +364,14 @@ alias src="source ~/bin/bashrc"
 alias sshec2="ssh -i ~/.ssh/ec2-pixelbook-2021.pem"
 alias sshlin="ssh "
 alias ubuntu='container run -it --volume ubuntu-data:/data ubuntu:latest bash'
-alias vc='vim CLAUDE.md ~/.claude/CLAUDE.md'
-alias vpi='vim ~/.pi/prompts/*'
+alias vc='nvim CLAUDE.md ~/.claude/CLAUDE.md'
+alias vpi='nvim ~/.pi/prompts/*'
 alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
-alias vib='vim ~/bin/bashrc'
-alias vp='vim package.json'
-alias vrc="vim ~/bin/bashrc"
-alias vsrc='vim -c "cd src"'
-alias vz="vim \`fzf\`"
+alias vib='nvim ~/bin/bashrc'
+alias vp='nvim package.json'
+alias vrc="nvim ~/bin/bashrc"
+alias vsrc='nvim -c "cd src"'
+alias vz="nvim \`fzf\`"
 alias win='tmux -u attach -c /bin/bash'
 alias tm='tmux new-session -s main -c .'
 
@@ -366,7 +382,7 @@ alias xltit='scripts/translate.mjs -da ebt-deepl -dl it -oe1 -dr '
 alias xltpt='scripts/translate.mjs -da ebt-deepl -dl pt-pt -oe1 -dr '
 
 export IGNOREEOF=42
-export VISUAL=vim
+export VISUAL=nvim
 export BASH_ENV=~/.bashrc
 export STAGING=unroot@104.237.155.82
 export VOICE=ubuntu@50.18.90.151
