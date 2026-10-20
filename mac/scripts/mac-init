@@ -44,6 +44,7 @@ if [ -e .bashrc ]; then
     fi
 fi
 ln -sf ~/sc-dev/mac/.bashrc .bashrc
+grep -q 'bashrc' .bash_profile 2>/dev/null || echo '[ -f ~/.bashrc ] && . ~/.bashrc' >> .bash_profile
 
 INFO installing console tools
 brew install -q vim
@@ -71,15 +72,20 @@ if [ $RC -ne 0 ]; then
   chmod +x $LOCAL/nvm-install.sh
   $LOCAL/nvm-install.sh; CHKRC
   echo RC$RC
-else
-  INFO nvm `nvm --version`
-  INFO nodejs `node --version`
 fi
+export NVM_DIR="$HOME/.nvm"
+. "$NVM_DIR/nvm.sh"
+INFO nvm `nvm --version`
+nvm install 24
+INFO nodejs `node --version`
 
 INFO installing AI tools
 brew install -q --cask visual-studio-code
 brew install -q jundot/omlx/omlx
-echo "Recommend oMLX LLM: gemma-4-26b-a4b-it-8bit"
+
+WARN "----------- IMPORTANT -----------------"
+WARN "oMLX:   use gemma-4-26b-a4b-it-8bit"
+WARN "bash:   reboot to get latest node"
 
 TIMESTAMP END
 
