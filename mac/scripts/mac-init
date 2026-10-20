@@ -27,13 +27,8 @@ LN_MAYBE ~/sc-dev/astyle.rc ~/.astylerc
 [ -L ~/.config ] && { ERROR ~/.config is a symbolic link; remove it and rerun; exit 1; }
 mkdir -p ~/.config
 LN_MAYBE ~/sc-dev/config/nvim ~/.config/nvim
+mkdir -p $DIR/../../local
 LOCAL=`realpath $DIR/../../local`
-if [ -d $LOCAL ]; then
-  DEBUG "Folder $LOCAL already exists"
-else
-  mkdir $LOCAL
-  INFO "Created folder: $LOCAL"
-fi
 
 INFO setting up git global configuration
 git config --global user.email "karl@firepick.org"
