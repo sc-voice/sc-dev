@@ -14,6 +14,12 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.breakindent = false
+vim.opt.cursorline = true
 
 -- Folding: Treesitter-based, files open unfolded
 vim.opt.foldmethod = "expr"
@@ -57,3 +63,7 @@ vim.api.nvim_set_hl(0, "@function", { fg = "#FFFF00" })
 vim.api.nvim_set_hl(0, "@keyword", { fg = "#C586C0" })
 vim.api.nvim_set_hl(0, "@constant", { fg = "#4FC1FF" })
 vim.api.nvim_set_hl(0, "@type", { fg = "#4EC9B0" })
+vim.api.nvim_set_hl(0, "NonText", { fg = "#FF88FF" })
+vim.api.nvim_set_hl(0, "LineNr", { fg = "#AAAAAA" })
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#FFFF80", bold = true, underline = true })
+vim.opt.showbreak = "… "

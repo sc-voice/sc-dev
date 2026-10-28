@@ -17,6 +17,10 @@ function PSGIT () {
   git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/' 
 }
 
+function sayfile () {
+  say -o /tmp/audio.m4a --file-format=m4af --data-forma=aac "$1" && cat /tmp/audio.m4a 
+}
+
 function job_count () {
   jobs | wc -l | sed -e 's/ *//'
 }
@@ -129,6 +133,7 @@ function c() {
   elif [ "$1" == "ph" ]; then cd ~/dev/ph5
   elif [ "$1" == "pic" ]; then cd picrophone
   elif [ "$1" == "scd" ]; then cd ~/sc-dev
+  elif [ "$1" == "sc-dev" ]; then cd ~/sc-dev
   elif [ "$1" == "po" ]; then cd Pinout.xyz
   elif [ "$1" == "r" ]; then cd FireREST
   elif [ "$1" == "rb" ]; then cd rest-bundle
@@ -217,7 +222,8 @@ function vx() {
 }
 
 function  v() {
-  find . -name "${1}*" | xargs nvim
+  //eval "find . -name dist -prune -o -name node_modules -prune -o -type f -name \"$1*\" -print | sort | xargs nvim"
+  eval "rg --files | grep \"$1*\" | xargs nvim"
 }
 
 function coredump {
@@ -364,6 +370,7 @@ alias src="source ~/bin/bashrc"
 alias sshec2="ssh -i ~/.ssh/ec2-pixelbook-2021.pem"
 alias sshlin="ssh "
 alias ubuntu='container run -it --volume ubuntu-data:/data ubuntu:latest bash'
+alias vi="nvim"
 alias vc='nvim CLAUDE.md ~/.claude/CLAUDE.md'
 alias vpi='nvim ~/.pi/prompts/*'
 alias vgnd='valgrind --leak-check=full --show-reachable=yes --track-origins=yes '
